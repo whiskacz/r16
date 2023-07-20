@@ -1,17 +1,52 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import React, { useState, useEffect } from "react";
+import ReactDOM from 'react-dom/client'
+import Button from './components/Button.jsx'
+import NewNote from "./components/NewNote.jsx";
+import { v4 as uuidv4 } from "uuid";
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
-);
+function R16App () {
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
+    
+    const [notes, setNote] = useState([])
+    const [color,setColor] = useState("")
+
+    const addNewNote = (newNote) => {
+        const newNotes = [...notes, newNote]
+        newNotes.filter((note) => !note.id && (note.id = uuidv4()))
+        setNote(newNotes)
+        console.log(notes)
+    }
+    useEffect(()=> {
+        setColor(`rgb(${Math.floor(Math.random()*255)},${Math.floor(Math.random()*255)},${Math.floor(Math.random()*255)})`)
+        
+    },[notes])
+
+    return (
+        <div style={{display:"flex",
+        flexDirection:"column", 
+        justifyContent:"center",
+        alignItems:"center"}}>
+        <Button  addNewNote={addNewNote}/>
+    
+        <div style={{
+            display:"flex",
+            width:"800px",
+            minHeight:"800px",
+            backgroundColor:"#ddd",
+            flexWrap:"wrap",
+            justifyContent:"space-between",
+            alignItems:"center",
+            alignContent:"center"
+        }}>
+            {notes.map((note) => 
+            (<NewNote 
+                key={note.id} 
+                note={note}
+                color={color} />))}
+        </div>
+        </div>
+    )
+}
+
+const root = ReactDOM.createRoot(document.getElementById('root'))
+root.render(<R16App />)
