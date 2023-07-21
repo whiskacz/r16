@@ -21,6 +21,13 @@ function R16App () {
         
     },[notes])
 
+
+    const deleteNote = ( id ) => {
+        
+        setNote(notes.filter((note) => note.id !== id))
+        
+    }
+
     return (
         <div style={{display:"flex",
         flexDirection:"column", 
@@ -42,7 +49,9 @@ function R16App () {
             (<NewNote 
                 key={note.id} 
                 note={note}
-                color={color} />))}
+                color={color} 
+                deleteNote={deleteNote}
+                />))}
         </div>
         </div>
     )
